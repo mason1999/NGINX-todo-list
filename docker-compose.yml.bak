@@ -1,0 +1,39 @@
+version: "3"
+services:
+  frontend:
+    container_name: frontend_container
+    build:
+      context: frontend/
+    image: frontend_image
+    ports:
+      - 3600:3000
+    depends_on:
+      - backend
+    networks:
+      - my_network
+  backend:
+    container_name: backend_container
+    build:
+      context: backend/
+    image: backend_image
+    ports:
+      - 3500:4000
+    depends_on:
+      - database
+    networks:
+      - my_network
+  database:
+    container_name: mongodb_container
+    image: mongo:latest
+    ports:
+      - 2800:27017
+    volumes:
+      - vol1:/data/db
+    networks:
+      - my_network
+volumes:
+  vol1:
+networks:
+  my_network:
+    name: home
+    driver: bridge
